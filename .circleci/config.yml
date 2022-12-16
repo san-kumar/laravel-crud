@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  test_8.0:
+    working_directory: ~/laravel-crud
+    docker:
+      - image: circleci/php:8.0-fpm-node-browsers
+    steps:
+      - checkout
+      - run: sudo composer self-update --no-progress --no-interaction
+      - run: composer install --no-progress --no-interaction --prefer-dist
+      - run: ./vendor/bin/phpunit
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test_8.0

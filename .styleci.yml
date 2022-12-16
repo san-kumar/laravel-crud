@@ -1,0 +1,6 @@
+preset: laravel
+
+risky: false
+
+disabled:
+  - not_operator_with_successor_space
