@@ -1,0 +1,17 @@
+{
+  "name": "laravel-crud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:san-kumar/laravel-crud.git",
+  "author": "San Kumar <sanchitbh@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.0.0-alpha.33",
+    "vue": "^3.2.45"
+  }
+}
