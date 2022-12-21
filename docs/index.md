@@ -95,9 +95,7 @@ $ php artisan make:crud authors --prefix=admin
 ## Contributing
 
 All contributions (in the form on pull requests, issues and
-feature-requests) are welcome. See
-the [contributors page](../../graphs/contributors) for all
-contributors.
+feature-requests) are welcome. 
 
 ## License
 
