@@ -13,9 +13,9 @@ if (preg_match_all("#link: '(.*)'#", $config, $matches)) {
 
 if (!empty($md)) {
     $content = implode("\n", $md);
-    $docs = "Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).\n\n";
+    $docs = "> ## Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).\n\n";
     $content = preg_replace("/## Introduction\n/", "## Introduction\n\n" . file_get_contents(__DIR__ . '/badges.md') . "\n\n$docs", $content);
-    $content = preg_replacE("/:::warning(.*?):::/ms", '$1', $content);
+    $content = preg_replacE("/:::warning(.*?):::/ms", "> Warning: $1", $content);
     echo $content;
     file_put_contents(__DIR__ . '/../README.md', $content);
 } else {

@@ -12,7 +12,7 @@
 
 
 
-Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).
+> ## Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).
 
 
 This package adds a **crud:generate** command to Artisan in
@@ -37,17 +37,15 @@ Laravel crud can generate nested CRUDs. For example, you can
 generate a CRUD for customers > tickets > replies by simply
 running:
 
+```bash
+$ php artisan crud:generate customers.tickets.replies
+```
+
 #### Table layout
 
 > ![Table index](https://cdn.articlevideorobot.com/hosted/22-12-2022/image-2-dbed.webp)  
 > (Automatically generated index page with responsive table
 > layout)
-
-```bash
-$ php artisan crud:generate customers.tickets.replies
-```
-
-## Template based
 
 The generated views are fully customizable and template
 based. For example, you can change the look of the index
@@ -56,25 +54,35 @@ chat (included in the package).
 
 #### Card layout
 
-> ![Card layout](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-303-4a64.webp)  
-> (Card layout)
-
 ```bash
 $ php artisan crud:generate customers.tickets.replies -i cards
 ```
 
-#### Chat layout
+> ![Card layout](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-303-4a64.webp)  
+> (Card layout)
 
-> ![Chat layout](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-304-c429.webp)  
-> (Chat layout)
+#### Chat layout
 
 ```bash
 $ php artisan crud:generate customers.tickets.replies -i chat
 ```
 
+> ![Chat layout](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-304-c429.webp)  
+> (Chat layout)
+
+#### Create / Edit Forms
+
+Laravel CRUD generator can automatically generate the FORM
+for creating and editing records. It can also generate the
+validation rules for the form.
+
+> ![Example of generated fields](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-307-f402.webp)  
+> (Example of generated fields)
+
+
 ## Heads up!
 
- The package is still in _alpha_
+> Warning:  The package is still in _alpha_
 
 You should only use it with new projects. If you are using
 it in an existing project, make sure to back up (or commit)

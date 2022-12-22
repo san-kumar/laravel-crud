@@ -10,8 +10,8 @@ hero:
       text: Get Started
       link: /guide/index
     - theme: alt
-      text: Watch demo video
-      link: https://github.com/vuejs/vitepress
+      text: View on GitHub
+      link: https://github.com/san-kumar/laravel-crud
 
 features:
   - icon: ⚡️
