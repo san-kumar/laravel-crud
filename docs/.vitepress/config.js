@@ -1,11 +1,12 @@
 export default {
     title: 'Laravel Crud Generator',
-    description: 'Laravel CRUD generator: Generate CRUD for any db table with the make:crud command.',
-    base: 'https://san-kumar.github.io/laravel-crud/',
+    host: 'localhost',
+    description: 'Laravel CRUD generator: Generate CRUD for any db table with the crud:generate command.',
+    //base: 'https://san-kumar.github.io/laravel-crud/',
+    base: '/laravel-crud/',
     appearance: 'dark',
     themeConfig: {
         nav: [
-            {text: '⚡️ Github', link: '/guide'},
             {text: 'Getting started', link: '/guide'},
             {
                 text: 'Artisan commands',
@@ -18,18 +19,30 @@ export default {
         ],
         sidebar: [
             {
-                text: 'Guide',
+                text: 'Introduction',
                 items: [
-                    {text: 'Introduction', link: '/introduction'},
-                    {text: 'Getting Started', link: '/getting-started'},
+                    {text: 'Index', link: '/guide/'},
+                    {text: 'Installation', link: '/guide/install'},
+                    {text: 'Options', link: '/guide/options'},
                 ]
             },
             {
-                text: 'Guide',
-                collapsible: true,
+                text: 'Details',
                 items: [
-                    {text: 'Introduction', link: '/introduction'},
-                    {text: 'Getting Started', link: '/getting-started'},
+                    {text: 'Nested parents', link: '/guide/nesting'},
+                    {text: 'Authentication', link: '/guide/authentication'},
+                    {text: 'Create / edit form', link: '/guide/crud'},
+                    {text: 'Soft deletes', link: '/guide/soft-deletes'},
+                    {text: 'Inbuilt search', link: '/guide/search'},
+                    {text: 'Customization', link: '/guide/customization'},
+                ]
+            },
+            {
+                text: 'Appendix',
+                items: [
+                    {text: 'Gotchas', link: '/guide/gotchas'},
+                    {text: 'CRUD removal', link: '/guide/remove'},
+                    {text: 'Roadmap', link: '/guide/roadmap'},
                 ]
             },
         ],
@@ -42,6 +55,9 @@ export default {
         footer: {
             message: 'Released under the MIT License.',
             copyright: 'Copyright © 2019-present Evan You'
-        }
+        },
+        socialLinks: [
+            { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+        ],
     }
 };

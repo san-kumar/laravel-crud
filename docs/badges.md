@@ -1,0 +1,5 @@
+[![Software License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/circleci/project/github/san-kumar/laravel-crud.svg?style=flat-square)](https://circleci.com/gh/san-kumar/laravel-crud)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/san-kumar/laravel-crud.svg?style=flat-square)](https://packagist.org/packages/san-kumar/laravel-crud)
+[![Total Downloads](https://img.shields.io/packagist/dt/san-kumar/laravel-crud.svg?style=flat-square)](https://img.shields.io/packagist/dt/san-kumar/laravel-crud.svg?style=flat-square)
+[![Coverage Status](https://coveralls.io/repos/github/san-kumar/laravel-crud/badge.svg)](https://coveralls.io/github/san-kumar/laravel-crud)

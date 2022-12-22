@@ -1,6 +1,6 @@
 {
   "name": "san-kumar/laravel-crud",
-  "description": "Laravel CRUD generator: Generate CRUD for any db table with the make:crud command.",
+  "description": "Laravel CRUD generator: Generate CRUD for any db table with the crud:generate command.",
   "keywords": [
     "artisan",
     "laravel",

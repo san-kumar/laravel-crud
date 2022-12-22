@@ -4,11 +4,11 @@ layout: home
 hero:
   name: Laravel CRUD 
   text: Generate CRUD for your db tables instantly!
-  tagline: Zero learning curve. Save time and avoid errors. 
+  tagline: Zero learning curve. Save time. Avoid errors.
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/getting-started
+      link: /guide/index
     - theme: alt
       text: Watch demo video
       link: https://github.com/vuejs/vitepress

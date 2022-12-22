@@ -158,7 +158,7 @@ class CrudGenerate extends CrudBase {
             ['layout', 'l', InputOption::VALUE_REQUIRED, 'The @layout name used by the views (default "app")'],
             ['section', 's', InputOption::VALUE_REQUIRED, 'The @section name used by the views (default "content")'],
             ['tailwind', 't', InputOption::VALUE_NONE, 'Use Tailwind CSS instead of Bootstrap 5 (shorthand for --css=tailwind)'],
-            ['template-dir', 'd', InputOption::VALUE_REQUIRED, 'The template directory (if you want to use custom templates)'],
+            ['template', 'd', InputOption::VALUE_REQUIRED, 'The template directory (if you want to use custom templates)'],
             ['force', 'f', InputOption::VALUE_NONE, 'Force overwriting of existing files'],
         ];
     }
