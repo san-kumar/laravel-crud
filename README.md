@@ -10,6 +10,10 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/san-kumar/laravel-crud.svg?style=flat-square)](https://img.shields.io/packagist/dt/san-kumar/laravel-crud.svg?style=flat-square)
 [![Coverage Status](https://coveralls.io/repos/github/san-kumar/laravel-crud/badge.svg)](https://coveralls.io/github/san-kumar/laravel-crud)
 
+
+Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).
+
+
 This package adds a **crud:generate** command to Artisan in
 your Laravel project. With this command you can generate a
 CRUD (Create, Read, Update, Delete) for any table instantly!
