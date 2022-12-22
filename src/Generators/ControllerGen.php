@@ -124,7 +124,7 @@ class ControllerGen extends BaseGen {
     public function getStore($edit) {
         foreach (SchemaUtils::getTableFields($this->mainTable()) as $field) {
             if ($field['id'] === 'user_id') {
-                if (!$edit) $fills[] = sprintf("\$%s->user_id = Auth::id();", $this->getVarName());
+                if (!$edit) $fills[] = sprintf("\$%s->user_id = auth()->id();", $this->getVarName());
             } else if (in_array($field['related_table'] ?? '', $this->tables)) {
                 if (!$edit) $fills[] = sprintf("\$%s->%s = \$%s->id;", $this->getVarName(), $field['id'], NameUtils::getVariableName($field['related_table']));
             } else {

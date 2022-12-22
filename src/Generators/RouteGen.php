@@ -5,7 +5,7 @@ namespace San\Crud\Generators;
 use San\Crud\Utils\NameUtils;
 
 class RouteGen extends BaseGen {
-    public function __construct(public array $tables, public string $routePrefix = '') {
+    public function __construct(public array $tables, public ?string $routePrefix = null) {
         parent::__construct($tables);
     }
 

@@ -13,6 +13,18 @@ class FileUtilsTest extends TestCase {
         $this->assertContains(__FILE__, $files);
     }
 
+    public function testRecursiveCopy() {
+        $src = __DIR__;
+        $dest = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(microtime(TRUE));
+
+        $files = FileUtils::getFiles($src);
+        $count = FileUtils::recursiveCopy($src, $dest);
+        $copied = FileUtils::getFiles($dest);
+
+        $this->assertEquals(count($files), $count);
+        $this->assertEquals(count($files), count($copied));
+    }
+
     public function testWriteFile() {
         if (file_exists(__DIR__ . '/test.txt')) {
             unlink(__DIR__ . '/test.txt');

@@ -32,9 +32,9 @@ class ControllerGenTest extends TestCase {
     }
 
     public function testGetValidations() {
-        $controllerGen = new ControllerGen(['tickets']);
-        $validations = $controllerGen->getValidations();
-        $this->assertStringContainsString("'subject' => 'required',", $validations);
+        $controllerGen = new ControllerGen(['users']);
+        $validations = $controllerGen->getValidations(true);
+        $this->assertStringContainsString('"required|unique:users,email,$user->id"', $validations);
     }
 
     public function testGetQuery() {
@@ -111,7 +111,7 @@ class ControllerGenTest extends TestCase {
         $controllerGen = new ControllerGen(['leads', 'tickets']);
         $store = $controllerGen->getStore(FALSE);
         $this->assertStringContainsString("\$ticket->lead_id = \$lead->id", $store);
-        $this->assertStringContainsString("\$ticket->user_id = Auth::id()", $store);
+        $this->assertStringContainsString("\$ticket->user_id = auth()->id()", $store);
 
         //edit a ticket
         //check lead_id is never assigned again

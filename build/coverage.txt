@@ -1,36 +1,44 @@
 
 
 Code Coverage Report:      
-  2022-12-17 14:51:30      
+  2022-12-22 05:48:35      
                            
  Summary:                  
-  Classes: 61.54% (8/13)   
-  Methods: 92.78% (90/97)  
-  Lines:   95.91% (305/318)
+  Classes: 50.00% (9/18)   
+  Methods: 89.08% (106/119)
+  Lines:   93.50% (446/477)
 
-San\Crud\Commands\MakeCrud
-  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 82/ 82)
+San\Crud\Commands\CrudBase
+  Methods:  75.00% ( 3/ 4)   Lines:  69.23% (  9/ 13)
+San\Crud\Commands\CrudGenerate
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 95/ 95)
+San\Crud\Commands\CrudRemove
+  Methods:  75.00% ( 3/ 4)   Lines:  89.36% ( 42/ 47)
+San\Crud\Commands\CrudTemplate
+  Methods:  66.67% ( 2/ 3)   Lines:  80.00% ( 16/ 20)
 San\Crud\Formatters\Formatter
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
 San\Crud\Generators\BaseGen
-  Methods: 100.00% (16/16)   Lines: 100.00% ( 25/ 25)
+  Methods: 100.00% (18/18)   Lines: 100.00% ( 28/ 28)
 San\Crud\Generators\ControllerGen
-  Methods:  88.24% (15/17)   Lines:  95.45% ( 42/ 44)
+  Methods:  82.35% (14/17)   Lines:  94.12% ( 48/ 51)
 San\Crud\Generators\ModelGen
   Methods:  85.71% ( 6/ 7)   Lines:  94.44% ( 17/ 18)
 San\Crud\Generators\PolicyGen
   Methods: 100.00% (12/12)   Lines: 100.00% ( 17/ 17)
 San\Crud\Generators\RouteGen
-  Methods: 100.00% (11/11)   Lines: 100.00% ( 23/ 23)
+  Methods: 100.00% (14/14)   Lines: 100.00% ( 27/ 27)
 San\Crud\Generators\Templates
   Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 10/ 10)
 San\Crud\Generators\ViewGen
-  Methods:  75.00% ( 3/ 4)   Lines:  92.31% ( 36/ 39)
+  Methods:  83.33% ( 5/ 6)   Lines:  94.34% ( 50/ 53)
 San\Crud\Utils\FileUtils
-  Methods:  50.00% ( 1/ 2)   Lines:  90.91% ( 10/ 11)
+  Methods:  33.33% ( 1/ 3)   Lines:  91.30% ( 21/ 23)
 San\Crud\Utils\NameUtils
   Methods: 100.00% ( 8/ 8)   Lines: 100.00% (  8/  8)
+San\Crud\Utils\RouteUtils
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 13/ 13)
 San\Crud\Utils\SchemaUtils
-  Methods:  75.00% ( 6/ 8)   Lines:  80.65% ( 25/ 31)
+  Methods:  77.78% ( 7/ 9)   Lines:  85.37% ( 35/ 41)
 San\Crud\Utils\TextUtils
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)

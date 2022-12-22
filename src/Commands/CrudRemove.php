@@ -59,7 +59,12 @@ class CrudRemove extends CrudBase {
             }
 
             $zip = new \ZipArchive();
-            $zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+            $result = $zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+            if (($result !== TRUE) || !is_writable(dirname($zipFile))) {
+                $this->error('Cannot create zip file: ' . $zipFile);
+                return COMMAND::FAILURE;
+            }
         }
 
         foreach ($this->getStubTypes($cssFramework) as $type) {
@@ -74,7 +79,7 @@ class CrudRemove extends CrudBase {
                     }
 
                     if (!empty($zip)) {
-                        $zip->addFile($dest, sprintf('%s/%s', $type, basename($dest)));
+                        $zip->addFromString(file_get_contents($dest), sprintf('%s/%s', $type, basename($dest)));
                     }
 
                     $this->info("Removing file $dest");

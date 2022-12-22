@@ -38,10 +38,12 @@ class CrudGenerate extends CrudBase {
     public function handle() {
         $tables = $this->getTables();
 
+        $routePrefix = $this->option('prefix');
+
         $cgen = new ControllerGen($tables);
         $mgen = new ModelGen($tables);
-        $rgen = new RouteGen($tables, $this->option('prefix'));
-        $vgen = new ViewGen($tables);
+        $rgen = new RouteGen($tables, $routePrefix);
+        $vgen = new ViewGen($tables, $routePrefix);
         $pgen = new PolicyGen($tables);
 
         $blanks = [

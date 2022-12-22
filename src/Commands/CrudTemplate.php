@@ -34,13 +34,13 @@ class CrudTemplate extends CrudBase {
 
         if (is_dir($dest) && !$force) {
             $this->error("Template '$dest' already exists");
-            exit(1);
+            return Command::FAILURE;
         }
 
         $src = realpath(__DIR__ . '/../template');
         if (!is_dir($src)) {
             $this->error("Template source '$src' not found");
-            exit(1);
+            return Command::FAILURE;
         }
 
         $count = FileUtils::recursiveCopy($src, $dest, $force);

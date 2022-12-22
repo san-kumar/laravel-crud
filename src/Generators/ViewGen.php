@@ -9,6 +9,10 @@ use San\Crud\Utils\SchemaUtils;
 use San\Crud\Utils\TextUtils;
 
 class ViewGen extends BaseGen {
+    public function __construct(public array $tables, public ?string $routePrefix = null) {
+        parent::__construct($tables);
+    }
+
     public function getViewName() {
         return $this->getVarName();
     }
@@ -22,12 +26,12 @@ class ViewGen extends BaseGen {
 
             if (!empty($lastTables)) {
                 $lastTable = $lastTables[count($lastTables) - 1];
-                $href = RouteUtils::makeRoute(NameUtils::getRouteName($lastTables) . '.show', $this->getVars($lastTables));
+                $href = RouteUtils::makeRoute(NameUtils::getRouteName($lastTables) . '.show', $this->getRawVars($lastTables), $this->routePrefix);
                 $anchorText = sprintf('%s #{{ $%s->id }}', NameUtils::titleCase($lastTable), NameUtils::getVariableName($lastTable));
                 $links[] = $this->render($template, $path, [], ['href' => "{{ $href }}", 'anchortext' => $anchorText, 'index' => $index++, 'total' => $total]);
             }
 
-            $href = RouteUtils::makeRoute(NameUtils::getRouteName($tables) . '.index', $this->getVars(array_slice($tables, 0, -1)));
+            $href = RouteUtils::makeRoute(NameUtils::getRouteName($tables) . '.index', $this->getRawVars(array_slice($tables, 0, -1)), $this->routePrefix);
             $anchorText = NameUtils::titleCase($table);
             $links[] = $this->render($template, $path, [], ['href' => "{{ $href }}", 'anchortext' => $anchorText, 'index' => $index++, 'total' => $total]);
 
@@ -42,14 +46,14 @@ class ViewGen extends BaseGen {
             $type = (!empty($f->values) ? 'select' : (preg_match('/text/i', $f->type) ? 'textarea' : (preg_match('/bool/i', $f->type) ? 'boolean' : (preg_match('/json/i', $f->type) ? 'json' : 'input'))));
             $val = $edit ? sprintf('@old(\'%s\', %s)', $f->id, $f->type === 'json' ? "json_encode(\$_var_->{$f->id})" : "\$_var_->{$f->id}") : sprintf('@old(\'%s\')', $f->id);
             $inputType = preg_match('/int|double|float|decimal/i', $f->type) ? 'number' : (preg_match('/mail/i', $f->id) ? 'email' : (preg_match('/password/i', $f->id) ? 'password' : (preg_match('/datetime/i', $f->type) ? 'datetime-local' : (preg_match('/date/i', $f->type) ? 'date' : (preg_match('/time/i', $f->type) ? 'time' : 'text')))));
-            $vars = ['_id_' => $f->id, '_name_' => $f->name, '_enums_' => TextUtils::arrayExport($f->values ?? [], TRUE), '_val_' => $val, '_type_' => $inputType, '_required_' => true || $f->nullable ? '' : 'required'];
+            $vars = ['_id_' => $f->id, '_name_' => $f->name, '_enums_' => TextUtils::arrayExport($f->values ?? [], TRUE), '_val_' => $val, '_type_' => $inputType, '_required_' => $f->nullable ? '' : 'required'];
 
             if (!empty($f->relation)) {
                 $type = 'related';
                 $vars['_related_'] = NameUtils::getVariableName($f->related_table);
                 $vars['_relateds_'] = NameUtils::getVariableNamePlural($f->related_table);
                 $vars['_readable_'] = SchemaUtils::firstHumanReadableField($f->related_table, 'id') ?: 'id';
-                $vars['_relatedroute_'] = RouteUtils::makeRoute($vars['_relateds_'] . '.create', '[]');
+                $vars['_relatedroute_'] = RouteUtils::makeRoute($vars['_relateds_'] . '.create', [], $this->routePrefix);
             }
 
             return trim(strtr(file_get_contents("$path/inputs/$type.blade.php"), $vars));
@@ -69,10 +73,10 @@ class ViewGen extends BaseGen {
                     $tables = array_slice($this->parentTables(), 0, $index + 1);
 
                     return sprintf('<a href="{{%s}}" class="text-dark">{{$_var_?->%s?->%s ?: "(blank)"}}</a>',
-                        RouteUtils::makeRoute(NameUtils::getRouteName($tables) . '.show', $this->getVars($tables)), $f->relation, SchemaUtils::firstHumanReadableField($f->related_table, 'id') ?? 'id');
+                        RouteUtils::makeRoute(NameUtils::getRouteName($tables) . '.show', $this->getRawVars($tables), $this->routePrefix), $f->relation, SchemaUtils::firstHumanReadableField($f->related_table, 'id') ?? 'id');
                 } else {
                     return sprintf('<a href="{{%s}}" class="text-dark">{{$_var_?->%s?->%s ?: "(blank)"}}</a>',
-                        RouteUtils::makeRoute(NameUtils::getRouteName($f->related_table) . '.show', "\$_var_->$f->id ?: 0"), $f->relation, SchemaUtils::firstHumanReadableField($f->related_table, 'id') ?? 'id');
+                        RouteUtils::makeRoute(NameUtils::getRouteName($f->related_table) . '.show', "\$_var_->$f->id ?: 0", $this->routePrefix), $f->relation, SchemaUtils::firstHumanReadableField($f->related_table, 'id') ?? 'id');
                 }
             } else {
                 $type = preg_match('/(json|boolean|text)/', $f->type) ? $f->type : 'string';

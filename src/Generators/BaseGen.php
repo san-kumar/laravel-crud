@@ -50,11 +50,17 @@ class BaseGen {
     }
 
     public function getVars(array $tables, array $extraVars = []) {
+        $vars = $this->getRawVars($tables, $extraVars);
+
+        return !empty($vars) ? sprintf("compact(%s)", join(', ', array_map(fn($var) => sprintf("'%s'", $var), $vars))) : '[]';
+    }
+
+    public function getRawVars(array $tables, ?array $extraVars = []) {
         foreach ($tables as $table) {
             $vars[] = NameUtils::getVariableName($table);
         }
 
-        return !empty($vars) || !empty($extraVars) ? sprintf("compact(%s)", join(', ', array_map(fn($var) => sprintf("'%s'", $var), array_merge($vars ?? [], $extraVars)))) : '[]';
+        return array_merge($vars ?? [], (array) $extraVars);
     }
 
     protected function hasUserId() {

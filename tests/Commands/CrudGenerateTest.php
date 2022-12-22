@@ -6,7 +6,7 @@ namespace San\Crud\Tests\Commands;
 use Illuminate\Support\Facades\Artisan;
 use San\Crud\Tests\TestCase;
 
-class MakeCrudTest extends TestCase {
+class CrudGenerateTest extends TestCase {
 
     public function testHandle() {
         $files = ['app/Http/Controllers/TicketController.php', 'app/Models/Ticket.php', 'app/Policies/TicketPolicy.php', 'resources/views/tickets/index.blade.php', 'resources/views/tickets/create.blade.php', 'resources/views/tickets/edit.blade.php', 'resources/views/tickets/show.blade.php', 'routes/tickets.php'];
@@ -18,7 +18,7 @@ class MakeCrudTest extends TestCase {
         }
 
         $exitCode = $this->withoutMockingConsoleOutput()
-            ->artisan('make:crud', ['table' => 'tickets']);
+            ->artisan('crud:generate', ['table' => 'tickets']);
         $result = Artisan::output();
         $this->assertEquals(0, $exitCode);
         $this->assertStringContainsString('TicketController.php', $result);
@@ -36,7 +36,7 @@ class MakeCrudTest extends TestCase {
         }
 
         $exitCode = $this->withoutMockingConsoleOutput()
-            ->artisan('make:crud', ['table' => 'leads.tickets']);
+            ->artisan('crud:generate', ['table' => 'leads.tickets']);
         $result = Artisan::output();
         $this->assertEquals(0, $exitCode);
         $this->assertStringContainsString('TicketController.php', $result);
