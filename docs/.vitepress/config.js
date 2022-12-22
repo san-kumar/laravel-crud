@@ -11,9 +11,9 @@ export default {
             {
                 text: 'Artisan commands',
                 items: [
-                    {text: 'artisan crud:generate', link: '/item-1'},
-                    {text: 'artisan crud:remove', link: '/item-2'},
-                    {text: 'artisan crud:template', link: '/item-3'}
+                    {text: 'artisan crud:generate', link: '/guide/'},
+                    {text: 'artisan crud:remove', link: '/guide/customize'},
+                    {text: 'artisan crud:template', link: '/guide/remove'}
                 ]
             }
         ],
@@ -47,17 +47,17 @@ export default {
             },
         ],
         editLink: {
-            pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path'
+            pattern: 'https://github.com/san-kumar/laravel-crud/docs/:path'
         },
         search: {
             maxSuggestions: 10
         },
         footer: {
             message: 'Released under the MIT License.',
-            copyright: 'Copyright © 2019-present Evan You'
+            copyright: 'Copyright © 2022-present San Kumar'
         },
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+            { icon: 'github', link: 'https://github.com/san-kumar/laravel-crud' }
         ],
     }
 };
