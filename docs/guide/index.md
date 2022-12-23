@@ -5,8 +5,9 @@
 ## Introduction
 
 This package adds a **crud:generate** command to Artisan in
-your Laravel project. With this command you can generate a
-CRUD (Create, Read, Update, Delete) for any table instantly!
+your Laravel project. With this command you can generate
+CRUD (Create, Read, Update, Delete) for your db tables
+instantly!
 
 The generated CRUD includes a Controller, Model, Policy,
 routes, validations, and 4 view files (index, create, edit,
@@ -22,8 +23,8 @@ and [Tailwind CSS](https://tailwindcss.com/).
 
 ### Index page
 
-Laravel crud can generate nested CRUDs. For example, you can
-generate a CRUD for customers > tickets > replies by simply
+Laravel-crud can generate nested CRUDs. For example, you can
+generate CRUD for customers > tickets > replies by simply
 running:
 
 ```bash
@@ -67,7 +68,6 @@ validation rules for the form.
 
 > ![Example of generated fields](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-307-f402.webp)  
 > (Example of generated fields)
-
 
 ## Heads up!
 

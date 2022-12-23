@@ -12,8 +12,8 @@ export default {
                 text: 'Artisan commands',
                 items: [
                     {text: 'artisan crud:generate', link: '/guide/'},
-                    {text: 'artisan crud:remove', link: '/guide/customize'},
-                    {text: 'artisan crud:template', link: '/guide/remove'}
+                    {text: 'artisan crud:template', link: '/guide/customization'},
+                    {text: 'artisan crud:remove', link: '/guide/remove'},
                 ]
             }
         ],

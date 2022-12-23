@@ -31,9 +31,8 @@ $ php artisan crud:generate authors.posts.comments
 
 By default, the generated routes are placed in
 the `./routes/crud/` directory. To include the generated
-routes in your `routes/web.php` file, just open
-the `routes/crud/web.php` file and add the following line at
-the end of the file:
+routes just open your `routes/web.php` file and add the
+following line at the end of the file:
 
 ```php
 /* inside routes/web.php */
