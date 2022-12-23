@@ -1,0 +1,1 @@
+import{_ as a,c as e,o as t,a as r}from"./app.db4b9ba8.js";const u=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"badges.md"}'),s={name:"badges.md"},l=r("",1),i=[l];function c(o,g,n,d,h,m){return t(),e("div",null,i)}const p=a(s,[["render",c]]);export{u as __pageData,p as default};
