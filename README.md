@@ -16,8 +16,9 @@
 
 
 This package adds a **crud:generate** command to Artisan in
-your Laravel project. With this command you can generate a
-CRUD (Create, Read, Update, Delete) for any table instantly!
+your Laravel project. With this command you can generate
+CRUD (Create, Read, Update, Delete) for your db tables
+instantly!
 
 The generated CRUD includes a Controller, Model, Policy,
 routes, validations, and 4 view files (index, create, edit,
@@ -33,8 +34,8 @@ and [Tailwind CSS](https://tailwindcss.com/).
 
 ### Index page
 
-Laravel crud can generate nested CRUDs. For example, you can
-generate a CRUD for customers > tickets > replies by simply
+Laravel-crud can generate nested CRUDs. For example, you can
+generate CRUD for customers > tickets > replies by simply
 running:
 
 ```bash
@@ -78,7 +79,6 @@ validation rules for the form.
 
 > ![Example of generated fields](https://cdn.articlevideorobot.com/hosted/22-12-2022/selection-307-f402.webp)  
 > (Example of generated fields)
-
 
 ## Heads up!
 
@@ -130,9 +130,8 @@ $ php artisan crud:generate authors.posts.comments
 
 By default, the generated routes are placed in
 the `./routes/crud/` directory. To include the generated
-routes in your `routes/web.php` file, just open
-the `routes/crud/web.php` file and add the following line at
-the end of the file:
+routes just open your `routes/web.php` file and add the
+following line at the end of the file:
 
 ```php
 /* inside routes/web.php */
@@ -217,7 +216,7 @@ $ php artisan crud:generate authors -i chat
 ```
 
 Please see
-the [index page here](/guide/index.md#screenshots) for
+the [index page here](https://san-kumar.github.io/laravel-crud/guide/index.md#screenshots) for
 screenshots.
 
 ### Layout and section names
@@ -517,7 +516,7 @@ generated CRUD uses Laravel's `Policy` classes for handling
 authorization. But you may prefer to use something else
 like `spatie/laravel-permission`, which can be done but
 requires you
-to [create your own templates](/guide/customization).
+to [create your own templates](https://san-kumar.github.io/laravel-crud/guide/customization).
 
 ## Alpha version
 
@@ -559,3 +558,12 @@ $ php artisan crud:remove customers.tickets.replies --backup=backup.zip
 This too will remove the files from the disk but will also
 create a Zip archive of all the removed files too.
 
+
+# Roadmap
+
+This document describes the roadmap for the next major
+version of the Symfony framework.
+
+## Automatic unit testing
+
+Automatically generate unit tests for all generated CRUD.

@@ -22,7 +22,7 @@ class CrudRemoveTest extends TestCase {
         $this->assertFileDoesNotExist($zipFn);
 
         $exitCode = $this->withoutMockingConsoleOutput()
-            ->artisan('crud:remove', ['tables' => (array) 'tickets', '--backup' => $zipFn]);
+            ->artisan('crud:remove', ['table' => 'tickets', '--backup' => $zipFn]);
         $result = Artisan::output();
         $this->assertStringContainsString('Removing file', $result);
         $this->assertStringContainsString('Backup created', $result);

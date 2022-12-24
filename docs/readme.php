@@ -15,8 +15,9 @@ if (!empty($md)) {
     $content = implode("\n", $md);
     $docs = "> ## Please see the [**full documentation here**](https://san-kumar.github.io/laravel-crud/).\n\n";
     $content = preg_replace("/## Introduction\n/", "## Introduction\n\n" . file_get_contents(__DIR__ . '/badges.md') . "\n\n$docs", $content);
-    $content = preg_replacE("/:::warning(.*?):::/ms", "> Warning: $1", $content);
-    echo $content;
+    $content = preg_replace("/:::warning(.*?):::/ms", "> Warning: $1", $content);
+    $content = preg_replace("#\(/guide#", "(https://san-kumar.github.io/laravel-crud/guide", $content);
+
     file_put_contents(__DIR__ . '/../README.md', $content);
 } else {
     echo "No files found";

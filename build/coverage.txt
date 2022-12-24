@@ -1,19 +1,19 @@
 
 
 Code Coverage Report:      
-  2022-12-22 23:19:13      
+  2022-12-24 03:08:27      
                            
  Summary:                  
-  Classes: 50.00% (9/18)   
-  Methods: 89.08% (106/119)
-  Lines:   93.50% (446/477)
+  Classes: 44.44% (8/18)   
+  Methods: 87.39% (104/119)
+  Lines:   91.13% (452/496)
 
 San\Crud\Commands\CrudBase
-  Methods:  75.00% ( 3/ 4)   Lines:  69.23% (  9/ 13)
+  Methods:  80.00% ( 4/ 5)   Lines:  71.43% ( 10/ 14)
 San\Crud\Commands\CrudGenerate
-  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 95/ 95)
+  Methods:  66.67% ( 2/ 3)   Lines:  98.97% ( 96/ 97)
 San\Crud\Commands\CrudRemove
-  Methods:  75.00% ( 3/ 4)   Lines:  89.36% ( 42/ 47)
+  Methods:  66.67% ( 2/ 3)   Lines:  89.13% ( 41/ 46)
 San\Crud\Commands\CrudTemplate
   Methods:  66.67% ( 2/ 3)   Lines:  80.00% ( 16/ 20)
 San\Crud\Formatters\Formatter
@@ -39,6 +39,6 @@ San\Crud\Utils\NameUtils
 San\Crud\Utils\RouteUtils
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 13/ 13)
 San\Crud\Utils\SchemaUtils
-  Methods:  77.78% ( 7/ 9)   Lines:  85.37% ( 35/ 41)
+  Methods:  70.00% ( 7/10)   Lines:  68.97% ( 40/ 58)
 San\Crud\Utils\TextUtils
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)

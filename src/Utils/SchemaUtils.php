@@ -3,7 +3,6 @@
 namespace San\Crud\Utils;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class SchemaUtils {
     public static function getTables(string|array $exclude) {
@@ -15,6 +14,8 @@ class SchemaUtils {
     public static function getTableFields(string $tableName, array $excludedColumns = [], array $alwaysIgnoredColumns = ['id', 'created_at', 'updated_at', 'deleted_at']) {
         // ugly enum hack as doctrine does not support enum types
         // https://www.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/mysql-enums.html#solution-1-mapping-to-varchars
+
+        $tableName = self::getRealTableName($tableName);
         DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'guid');
 
         $columns = DB::getDoctrineSchemaManager()->listTableColumns($tableName);
@@ -31,7 +32,7 @@ class SchemaUtils {
         foreach ($columns as $column) {
             if (in_array($column->getName(), $ignoredColumns)) continue;
 
-            $field = ['id' => $column->getName(), 'type' => $column->getType()->getName(), 'name' => Str::title(str_replace('_', ' ', $column->getName())), 'nullable' => !$column->getNotnull()];
+            $field = ['id' => $column->getName(), 'type' => $column->getType()->getName(), 'name' => \Str::title(str_replace('_', ' ', $column->getName())), 'nullable' => !$column->getNotnull()];
 
             if ($field['type'] == 'guid') {
                 try {
@@ -42,7 +43,7 @@ class SchemaUtils {
             }
 
             if (preg_match('/^(.*?)_id$/', $field['id'], $matches)) {
-                $relatedTable = Str::plural($matches[1]);
+                $relatedTable = \Str::plural($matches[1]);
                 if (self::tableExists($relatedTable)) {
                     $field['relation'] = $matches[1];
                     $field['related_table'] = $relatedTable;
@@ -79,23 +80,50 @@ class SchemaUtils {
     }
 
     public static function getUserIdField(string $tableName, $userIdField = 'user_id') {
-        if (!self::hasTable($tableName)) return NULL;
-        return \Schema::hasColumn($tableName, $userIdField) ? $userIdField : NULL;
+        if (!self::tableExists($tableName)) return NULL;
+        return \Schema::hasColumn(self::getRealTableName($tableName), $userIdField) ? $userIdField : NULL;
     }
 
     public static function hasTable(string $tableName) {
-        return \Schema::hasTable($tableName);
+        return self::tableExists($tableName);
     }
 
     public static function hasTimestamps(string $tableName) {
-        return \Schema::hasColumn($tableName, 'created_at') && \Schema::hasColumn($tableName, 'updated_at');
+        if (!self::tableExists($tableName)) return FALSE;
+        return \Schema::hasColumn(self::getRealTableName($tableName), 'created_at') && \Schema::hasColumn(self::getRealTableName($tableName), 'updated_at');
     }
 
     public static function hasSoftDelete(string $tableName) {
-        return \Schema::hasColumn($tableName, 'deleted_at');
+        if (!self::tableExists($tableName)) return FALSE;
+        return \Schema::hasColumn(self::getRealTableName($tableName), 'deleted_at');
     }
 
     public static function tableExists(string $tableName) {
-        return DB::connection()->getSchemaBuilder()->hasTable($tableName);
+        return !!self::getRealTableName($tableName);
+    }
+
+    public static function getRealTableName(string $tableName) {
+        if (\Schema::hasTable($tableName)) return $tableName;
+        //return false if it's not a mysql connection
+        if (DB::connection()->getDriverName() != 'mysql') return FALSE;
+
+        if (empty($GLOBALS['view_tables'])) $GLOBALS['view_tables'] = [];
+        if (!empty($GLOBALS['view_tables'][$tableName])) return $GLOBALS['view_tables'][$tableName];
+
+        //check if there is a view
+        $views = DB::select('SHOW FULL TABLES WHERE Table_type = \'VIEW\'');
+        foreach ($views as $view) {
+            $key = 'Tables_in_' . DB::connection()->getDatabaseName();
+            if ($view->$key == $tableName) {
+                //get the original table name
+                $results = DB::select("SHOW CREATE VIEW $tableName");
+                $result = $results[0]->{'Create View'};
+                preg_match('/ FROM `(.*?)` /i', $result, $matches);
+                $GLOBALS['view_tables'][$tableName] = $matches[1];
+                return $matches[1];
+            }
+        }
+
+        return FALSE;
     }
 }

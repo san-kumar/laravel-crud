@@ -36,4 +36,8 @@ class CrudBase extends Command {
 
         return $this->getConfig('css', 'bootstrap');
     }
+
+    protected function getTables() {
+        return array_values(array_filter(array_map('trim', preg_split('/\.\s*/', $this->argument('table')))));
+    }
 }

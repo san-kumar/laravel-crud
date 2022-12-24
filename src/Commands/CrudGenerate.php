@@ -11,6 +11,7 @@ use San\Crud\Generators\RouteGen;
 use San\Crud\Generators\Templates;
 use San\Crud\Generators\ViewGen;
 use San\Crud\Utils\FileUtils;
+use San\Crud\Utils\SchemaUtils;
 use San\Crud\Utils\TextUtils;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,6 +38,12 @@ class CrudGenerate extends CrudBase {
      */
     public function handle() {
         $tables = $this->getTables();
+
+        foreach ($tables as $table) {
+            if (!SchemaUtils::tableExists($table)) {
+                $this->warn("Table $table does not exist in the database. Did you forget to run migrations?");
+            }
+        }
 
         $routePrefix = $this->option('prefix');
 
@@ -144,10 +151,6 @@ class CrudGenerate extends CrudBase {
         }
 
         return Command::SUCCESS;
-    }
-
-    protected function getTables() {
-        return array_values(array_filter(array_map('trim', preg_split('/\.\s*/', $this->argument('table')))));
     }
 
     protected function getOptions() {

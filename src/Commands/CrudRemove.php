@@ -97,10 +97,6 @@ class CrudRemove extends CrudBase {
         return Command::SUCCESS;
     }
 
-    protected function getTables() {
-        return array_values(array_filter(array_map('trim', $this->argument('tables'))));
-    }
-
     protected function getOptions() {
         return [
             ['backup', 'b', InputOption::VALUE_REQUIRED, 'Name of zip file to backup files before removing'],
@@ -113,7 +109,7 @@ class CrudRemove extends CrudBase {
      */
     protected function getArguments() {
         return [
-            ['tables', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Remove all generated files for the given tables (separate multiple tables with a space)'],
+            ['table', InputArgument::REQUIRED, 'Remove all generated files for the given tables'],
         ];
     }
 }
