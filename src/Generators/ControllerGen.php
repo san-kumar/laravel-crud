@@ -15,30 +15,31 @@ class ControllerGen extends BaseGen {
         return $this->getControllerArgs($this->tables);
     }
 
-    public function getControllerParentArgs() {
-        return $this->getControllerArgs($this->parentTables());
-    }
-
     public function getControllerArgs(array $tables) {
         $value = join(', ', array_map(fn($table) => sprintf('%s $%s', NameUtils::getModelName((array) $table), NameUtils::getVariableName($table)), $tables));
         return !empty($value) ? "$value," : "";
     }
 
+    public function getControllerParentArgs() {
+        return $this->getControllerArgs($this->parentTables());
+    }
+
     public function getFindById() {
-        return sprintf('$%s = %s::withTrashed()%s->find($%s_id);', $this->getVarName(), NameUtils::getModelName($this->mainTable()),
-            $this->hasUserId() ? "->where('user_id', auth()->id())" : "", NameUtils::getVariableName($this->mainTable()));
+        return sprintf('$%s = %s::withTrashed()%s->find($%s_id);', $this->getVarName(), $this->getMainModelName(),
+            $this->hasUserId() ? "->where('user_id', auth()->id())" : "", $this->getMainVarName());
     }
 
     public function getQuery() {
         if ($this->hasParentTable()) {
             $code[] = sprintf('$%s = $%s->%s();', $this->getVarNamePlural(), $this->getParentVarName(), $this->mainTable());
         } else {
-            $code[] = sprintf('$%s = %s::query();', $this->getVarNamePlural(), NameUtils::getModelName((array) $this->mainTable()));
+            $code[] = sprintf('$%s = %s::query();', $this->getVarNamePlural(), $this->getMainModelName());
         }
 
         foreach (array_slice($this->tables, -2) as $table) {
-            if (SchemaUtils::getUserIdField($table)) {
-                $code[] = sprintf("\t\t\$%s->where('%s', auth()->id());", $table === $this->mainTable() ? NameUtils::getVariableNamePlural($table) : NameUtils::getVariableName($table), SchemaUtils::getUserIdField($table));
+            $realTable = $this->getTableNameFromAlias($table);
+            if ($userIdField = SchemaUtils::getUserIdField($realTable)) {
+                $code[] = sprintf("\t\t\$%s->where('%s', auth()->id());", $realTable === $this->mainTableReal() ? NameUtils::getVariableNamePlural($table) : NameUtils::getVariableName($table), $userIdField);
             }
         }
 
@@ -50,7 +51,7 @@ class ControllerGen extends BaseGen {
     }
 
     public function getSearch() {
-        return sprintf("if(!empty(\$request->search)) {\n\t\t\t\$%s->where('%s', 'like', '%%' . \$request->search . '%%');\n\t\t}", $this->getVarNamePlural(), SchemaUtils::firstHumanReadableField($this->mainTable(), 'id') ?: 'id');
+        return sprintf("if(!empty(\$request->search)) {\n\t\t\t\$%s->where('%s', 'like', '%%' . \$request->search . '%%');\n\t\t}", $this->getVarNamePlural(), SchemaUtils::firstHumanReadableField($this->mainTableReal(), 'id') ?: 'id');
     }
 
     public function getPager() {
@@ -70,7 +71,10 @@ class ControllerGen extends BaseGen {
     }
 
     public function getCreateVars() {
-        return $this->getVars($this->parentTables(), (array) array_map(fn($field) => $field['related_table'], (array) $this->getExternallyRelatedFields()));
+        $extraVars = (array) array_map(fn($field) => $field['related_table'], (array) $this->getExternallyRelatedFields());
+        $result = $this->getVars($this->parentTables(), $extraVars);
+
+        return $result;
     }
 
     public function getEditVars() {
@@ -87,10 +91,11 @@ class ControllerGen extends BaseGen {
 
     public function getSelects() {
         foreach ($this->getExternallyRelatedFields() as $field) {
-            if (SchemaUtils::getUserIdField($field['related_table'])) {
-                $code[] = sprintf("\$%s = \App\Models\%s::where('%s', auth()->id())->get();", NameUtils::getVariableNamePlural($field['related_table']), NameUtils::getModelName($field['related_table']), SchemaUtils::getUserIdField($field['related_table']));
+            $realTable = $this->getTableNameFromAlias($field['related_table']);
+            if (SchemaUtils::getUserIdField($realTable)) {
+                $code[] = sprintf("\$%s = \App\Models\%s::where('%s', auth()->id())->get();", NameUtils::getVariableNamePlural($realTable), NameUtils::getModelName($realTable), SchemaUtils::getUserIdField($realTable));
             } else {
-                $code[] = sprintf("\$%s = \App\Models\%s::all();", NameUtils::getVariableNamePlural($field['related_table']), NameUtils::getModelName($field['related_table']));
+                $code[] = sprintf("\$%s = \App\Models\%s::all();", NameUtils::getVariableNamePlural($realTable), NameUtils::getModelName($realTable));
             }
         }
 
@@ -106,7 +111,7 @@ class ControllerGen extends BaseGen {
             }
 
             if (!empty($field['unique'])) {
-                $validations[$field['id']] .= (!empty($validations[$field['id']]) ? '|' : '') . "unique:{$this->mainTable()},{$field['id']}";
+                $validations[$field['id']] .= (!empty($validations[$field['id']]) ? '|' : '') . "unique:{$this->mainTableReal()},{$field['id']}";
                 if ($edit) {
                     $validations[$field['id']] .= ",\${$this->getVarName()}->id";
                 }
@@ -122,11 +127,13 @@ class ControllerGen extends BaseGen {
     }
 
     public function getStore($edit) {
-        foreach (SchemaUtils::getTableFields($this->mainTable()) as $field) {
+        foreach (SchemaUtils::getTableFields($this->mainTableReal()) as $field) {
             if ($field['id'] === 'user_id') {
                 if (!$edit) $fills[] = sprintf("\$%s->user_id = auth()->id();", $this->getVarName());
-            } else if (in_array($field['related_table'] ?? '', $this->tables)) {
-                if (!$edit) $fills[] = sprintf("\$%s->%s = \$%s->id;", $this->getVarName(), $field['id'], NameUtils::getVariableName($field['related_table']));
+            } else if (in_array($field['related_table'] ?? '', $this->realTables())) {
+                if (!$edit) {
+                    $fills[] = sprintf("\$%s->%s = \$%s->id;", $this->getVarName(), $field['id'], NameUtils::getVariableName($this->getAliasFromTableName($field['related_table'])));
+                }
             } else {
                 $bool = preg_match('/bool/', $field['type']) ? '!!' : '';
                 $fills[] = sprintf("\$%s->%s = %s\$request->%s;", $this->getVarName(), $field['id'], $bool, $field['id']);

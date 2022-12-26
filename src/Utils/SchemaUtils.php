@@ -5,8 +5,12 @@ namespace San\Crud\Utils;
 use Illuminate\Support\Facades\DB;
 
 class SchemaUtils {
-    public static function getTables(string|array $exclude) {
+    public static function getTables(string|array $exclude, bool $withViews = TRUE) {
         $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+        if ($withViews) {
+            $views = DB::connection()->getDoctrineSchemaManager()->listViews();
+            $tables = array_merge($tables, array_keys($views));
+        }
 
         return array_values(array_filter($tables, fn($table) => !in_array($table, (array) $exclude)));
     }
@@ -15,7 +19,6 @@ class SchemaUtils {
         // ugly enum hack as doctrine does not support enum types
         // https://www.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/mysql-enums.html#solution-1-mapping-to-varchars
 
-        $tableName = self::getRealTableName($tableName);
         DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'guid');
 
         $columns = DB::getDoctrineSchemaManager()->listTableColumns($tableName);
@@ -36,9 +39,10 @@ class SchemaUtils {
 
             if ($field['type'] == 'guid') {
                 try {
-                    $enums = DB::select("SHOW COLUMNS FROM $tableName WHERE Field = '$field[name]'");
+                    $enums = DB::select("SHOW COLUMNS FROM $tableName WHERE Field = '$field[id]'");
                     $field['values'] = explode(',', str_replace("'", '', substr($enums[0]->Type, 5, -1)));
                 } catch (\Throwable $e) {
+                    echo '';
                 }
             }
 
@@ -81,7 +85,7 @@ class SchemaUtils {
 
     public static function getUserIdField(string $tableName, $userIdField = 'user_id') {
         if (!self::tableExists($tableName)) return NULL;
-        return \Schema::hasColumn(self::getRealTableName($tableName), $userIdField) ? $userIdField : NULL;
+        return \Schema::hasColumn($tableName, $userIdField) ? $userIdField : NULL;
     }
 
     public static function hasTable(string $tableName) {
@@ -90,40 +94,15 @@ class SchemaUtils {
 
     public static function hasTimestamps(string $tableName) {
         if (!self::tableExists($tableName)) return FALSE;
-        return \Schema::hasColumn(self::getRealTableName($tableName), 'created_at') && \Schema::hasColumn(self::getRealTableName($tableName), 'updated_at');
+        return \Schema::hasColumn($tableName, 'created_at') && \Schema::hasColumn($tableName, 'updated_at');
     }
 
     public static function hasSoftDelete(string $tableName) {
         if (!self::tableExists($tableName)) return FALSE;
-        return \Schema::hasColumn(self::getRealTableName($tableName), 'deleted_at');
+        return \Schema::hasColumn($tableName, 'deleted_at');
     }
 
     public static function tableExists(string $tableName) {
-        return !!self::getRealTableName($tableName);
-    }
-
-    public static function getRealTableName(string $tableName) {
-        if (\Schema::hasTable($tableName)) return $tableName;
-        //return false if it's not a mysql connection
-        if (DB::connection()->getDriverName() != 'mysql') return FALSE;
-
-        if (empty($GLOBALS['view_tables'])) $GLOBALS['view_tables'] = [];
-        if (!empty($GLOBALS['view_tables'][$tableName])) return $GLOBALS['view_tables'][$tableName];
-
-        //check if there is a view
-        $views = DB::select('SHOW FULL TABLES WHERE Table_type = \'VIEW\'');
-        foreach ($views as $view) {
-            $key = 'Tables_in_' . DB::connection()->getDatabaseName();
-            if ($view->$key == $tableName) {
-                //get the original table name
-                $results = DB::select("SHOW CREATE VIEW $tableName");
-                $result = $results[0]->{'Create View'};
-                preg_match('/ FROM `(.*?)` /i', $result, $matches);
-                $GLOBALS['view_tables'][$tableName] = $matches[1];
-                return $matches[1];
-            }
-        }
-
-        return FALSE;
+        return \Schema::hasTable($tableName);
     }
 }

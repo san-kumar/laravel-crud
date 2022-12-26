@@ -35,11 +35,11 @@ class CrudRemove extends CrudBase {
     public function handle() {
         $tables = $this->getTables();
 
-        $cgen = new ControllerGen($tables);
-        $mgen = new ModelGen($tables);
-        $rgen = new RouteGen($tables);
-        $vgen = new ViewGen($tables);
-        $pgen = new PolicyGen($tables);
+        $cgen = new ControllerGen($tables, $tables);
+        $mgen = new ModelGen($tables, $tables);
+        $rgen = new RouteGen($tables, $tables);
+        $vgen = new ViewGen($tables, $tables);
+        $pgen = new PolicyGen($tables, $tables);
 
         $blanks = [
             'controller' => $cgen->getControllerName(),

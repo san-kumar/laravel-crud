@@ -28,7 +28,7 @@ class ModelGen extends BaseGen {
     }
 
     public function getBelongsTo() {
-        foreach (SchemaUtils::getTableFieldsWithIds($this->mainTable(), ['user_id']) as $field) {
+        foreach (SchemaUtils::getTableFieldsWithIds($this->mainTableReal(), ['user_id']) as $field) {
             $relations[] = sprintf("public function %s() {\n\t\treturn \$this->belongsTo(%s::class);\n\t}", $field['relation'], NameUtils::getModelName((array) $field['related_table']));
         }
 
@@ -36,10 +36,14 @@ class ModelGen extends BaseGen {
     }
 
     public function getHasMany() {
-        foreach (SchemaUtils::getTables($this->mainTable()) as $table) {
-            foreach (SchemaUtils::getTableFieldsWithIds($table, ['user_id']) as $field) {
-                if ($field['related_table'] == $this->mainTable()) {
-                    $relations[] = sprintf("public function %s() {\n\t\treturn \$this->hasMany(%s::class);\n\t}", NameUtils::getVariableNamePlural($table), NameUtils::getModelName((array) $table));
+        $tables = SchemaUtils::getTables($this->mainTableReal());
+
+        foreach ($tables as $table) {
+            $fields = SchemaUtils::getTableFieldsWithIds($this->getTableNameFromAlias($table), ['user_id']);
+            foreach ($fields as $field) {
+                if ($field['related_table'] == $this->mainTableReal()) {
+                    $fKey = $field['id'];
+                    $relations[] = sprintf("public function %s() {\n\t\treturn \$this->hasMany(%s::class, '%s');\n\t}", NameUtils::getVariableNamePlural($table), NameUtils::getModelName((array) $table), $fKey);
                 }
             }
         }
@@ -48,7 +52,7 @@ class ModelGen extends BaseGen {
     }
 
     public function getCasts() {
-        foreach (SchemaUtils::getTableFields($this->mainTable(), ['user_id']) as $field) {
+        foreach (SchemaUtils::getTableFields($this->mainTableReal(), ['user_id']) as $field) {
             if ($field['type'] == 'json') {
                 $casts[] = sprintf("'%s' => AsArrayObject::class", $field['id']);
             }

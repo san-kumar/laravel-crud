@@ -12,11 +12,11 @@ class FormatterTest extends TestCase {
         $this->assertSoftDeleted($table, $data);
         //@endsoftdelete';
 
-        $formatter = new Formatter(['tickets']);
+        $formatter = new Formatter(['tickets'], []);
         $result = $formatter->fixSoftDelete($str);
         $this->assertStringNotContainsString('@softdelete', $result);
 
-        $formatter = new Formatter(['leads']);
+        $formatter = new Formatter(['leads'], []);
         $result = $formatter->fixSoftDelete($str);
         $this->assertStringContainsString('@softdelete', $result);
     }

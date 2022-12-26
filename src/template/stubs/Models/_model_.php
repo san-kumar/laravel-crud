@@ -11,6 +11,7 @@ class _model_ extends Model {
 
     /*_softdelete_*/
 
+    protected $table = '_tablename_';
     protected $fillable = [/*_fillable_*/];
 
     /*_casts_*/

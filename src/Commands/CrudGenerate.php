@@ -38,20 +38,15 @@ class CrudGenerate extends CrudBase {
      */
     public function handle() {
         $tables = $this->getTables();
-
-        foreach ($tables as $table) {
-            if (!SchemaUtils::tableExists($table)) {
-                $this->warn("Table $table does not exist in the database. Did you forget to run migrations?");
-            }
-        }
+        $aliases = $this->getTableAliases();
 
         $routePrefix = $this->option('prefix');
 
-        $cgen = new ControllerGen($tables);
-        $mgen = new ModelGen($tables);
-        $rgen = new RouteGen($tables, $routePrefix);
-        $vgen = new ViewGen($tables, $routePrefix);
-        $pgen = new PolicyGen($tables);
+        $cgen = new ControllerGen($tables, $aliases);
+        $mgen = new ModelGen($tables, $aliases);
+        $rgen = new RouteGen($tables, $aliases, $routePrefix);
+        $vgen = new ViewGen($tables, $aliases, $routePrefix);
+        $pgen = new PolicyGen($tables, $aliases);
 
         $blanks = [
             'var'    => $cgen->getVarName(),
@@ -88,6 +83,7 @@ class CrudGenerate extends CrudBase {
             'belongsto'  => $mgen->getBelongsTo(),
             'hasmany'    => $mgen->getHasMany(),
             'casts'      => $mgen->getCasts(),
+            'tablename'  => $mgen->mainTableReal(),
 
             'route'                  => $rgen->getRouteName(),
             'routevars'              => $rgen->getRouteVars(),
@@ -129,7 +125,7 @@ class CrudGenerate extends CrudBase {
         $blanks['edit'] = $vgen->genForm('render/form', $partialsDir, $blanks, TRUE);
         $blanks['show'] = $vgen->genIndex('render/show', $partialsDir, $blanks);
 
-        $formatter = new Formatter($tables);
+        $formatter = new Formatter($tables, $aliases);
         $forceOverwrite = $this->option('force');
 
         foreach ($this->getStubTypes($cssFramework) as $type) {
@@ -162,6 +158,7 @@ class CrudGenerate extends CrudBase {
             ['section', 's', InputOption::VALUE_REQUIRED, 'The @section name used by the views (default "content")'],
             ['tailwind', 't', InputOption::VALUE_NONE, 'Use Tailwind CSS instead of Bootstrap 5 (shorthand for --css=tailwind)'],
             ['template', 'd', InputOption::VALUE_REQUIRED, 'The template directory (if you want to use custom templates)'],
+            ['alias', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The alias for the table name (e.g. --alias some_alias=table_name --alias some_other_alias=another_table)'],
             ['force', 'f', InputOption::VALUE_NONE, 'Force overwriting of existing files'],
         ];
     }

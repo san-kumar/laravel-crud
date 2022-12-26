@@ -7,7 +7,7 @@ use San\Crud\Utils\NameUtils;
 use San\Crud\Utils\SchemaUtils;
 
 class BaseGen {
-    public function __construct(public array $tables) { }
+    public function __construct(public array $tables, public array $aliases = []) { }
 
     public function getVarName() {
         return Str::singular($this->getVarNamePlural());
@@ -15,6 +15,10 @@ class BaseGen {
 
     public function getVarNamePlural() {
         return NameUtils::getVariableNamePlural($this->mainTable());
+    }
+
+    public function mainTable() {
+        return $this->tables[count($this->tables) - 1];
     }
 
     public function getTitle() {
@@ -33,20 +37,24 @@ class BaseGen {
         return NameUtils::getVariableNamePlural($this->parentTable());
     }
 
+    public function parentTable() {
+        return $this->tables[count($this->tables) - 2];
+    }
+
+    public function getMainModelName() {
+        return NameUtils::getModelName((array) $this->mainTable());
+    }
+
+    public function getMainVarName() {
+        return NameUtils::getVariableName($this->mainTable());
+    }
+
     public function hasParentTable() {
         return count($this->tables) > 1;
     }
 
     public function parentTables() {
         return array_slice($this->tables, 0, -1);
-    }
-
-    public function mainTable() {
-        return $this->tables[count($this->tables) - 1];
-    }
-
-    public function parentTable() {
-        return $this->tables[count($this->tables) - 2];
     }
 
     public function getVars(array $tables, array $extraVars = []) {
@@ -64,35 +72,51 @@ class BaseGen {
     }
 
     protected function hasUserId() {
-        return SchemaUtils::getUserIdField($this->mainTable());
+        return SchemaUtils::getUserIdField($this->mainTableReal());
+    }
+
+    public function mainTableReal() {
+        return $this->getTableNameFromAlias($this->mainTable());
+    }
+
+    public function getTableNameFromAlias($tableName) {
+        return $this->aliases[$tableName] ?? $tableName;
+    }
+
+    public function getAliasFromTableName($tableName) {
+        return array_search($tableName, $this->aliases) ?: $tableName;
     }
 
     protected function hasTimestamps() {
-        return SchemaUtils::hasTimestamps($this->mainTable());
+        return SchemaUtils::hasTimestamps($this->mainTableReal());
     }
 
     protected function hasSoftDeletes() {
-        return SchemaUtils::hasSoftDelete($this->mainTable());
+        return SchemaUtils::hasSoftDelete($this->mainTableReal());
     }
 
     protected function getFirstReadableField($key = NULL) {
-        return SchemaUtils::firstHumanReadableField($this->mainTable(), $key) ?: 'id';
+        return SchemaUtils::firstHumanReadableField($this->mainTableReal(), $key) ?: 'id';
     }
 
     protected function getFillableFields($exceptColumns = ['user_id']) {
-        foreach (SchemaUtils::getTableFields($this->mainTable(), $exceptColumns) as $field) {
-            if (in_array($field['related_table'] ?? '', $this->tables)) continue;
+        foreach (SchemaUtils::getTableFields($this->mainTableReal(), $exceptColumns) as $field) {
+            if (in_array($field['related_table'] ?? '', $this->realTables())) continue;
             $fillable[] = $field;
         }
 
         return $fillable ?? [];
     }
 
+    public function realTables() {
+        return array_map(fn($table) => $this->getTableNameFromAlias($table), $this->tables);
+    }
+
     protected function getExternallyRelatedFields() {
-        $fields = SchemaUtils::getTableFieldsWithIds($this->mainTable(), ['user_id']);
+        $fields = SchemaUtils::getTableFieldsWithIds($this->mainTableReal(), ['user_id']);
 
         foreach ($fields as $field) {
-            if (in_array($field['related_table'], $this->tables)) continue;
+            if (in_array($field['related_table'], $this->realTables())) continue;
             $externallyRelatedFields[] = $field;
         }
 

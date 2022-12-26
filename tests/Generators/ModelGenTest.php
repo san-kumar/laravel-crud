@@ -10,7 +10,7 @@ class ModelGenTest extends TestCase {
     public function testGetHasMany() {
         $modelGen = new ModelGen(['tickets', 'leads']);
         $hasMany = $modelGen->getHasMany();
-        $this->assertStringContainsString("\$this->hasMany(Ticket::class)", $hasMany);
+        $this->assertStringContainsString("\$this->hasMany(Ticket::class", $hasMany);
     }
 
     public function testGetCasts() {
