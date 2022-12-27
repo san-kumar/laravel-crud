@@ -36,12 +36,16 @@ class ControllerGen extends BaseGen {
             $code[] = sprintf('$%s = %s::query();', $this->getVarNamePlural(), $this->getMainModelName());
         }
 
-        foreach (array_slice($this->tables, -2) as $table) {
+        /* don't need this as policy already checks for user_id
+         *
+         * foreach (array_slice($this->tables, -2) as $table) {
             $realTable = $this->getTableNameFromAlias($table);
             if ($userIdField = SchemaUtils::getUserIdField($realTable)) {
                 $code[] = sprintf("\t\t\$%s->where('%s', auth()->id());", $realTable === $this->mainTableReal() ? NameUtils::getVariableNamePlural($table) : NameUtils::getVariableName($table), $userIdField);
             }
         }
+        *
+        */
 
         if ($this->hasSoftDeletes()) {
             $code[] = sprintf("\n\t\tif (!!\$request->trashed) {\n\t\t\t\$%s->withTrashed();\n\t\t}", $this->getVarNamePlural());
