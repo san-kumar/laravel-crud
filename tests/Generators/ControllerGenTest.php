@@ -41,7 +41,6 @@ class ControllerGenTest extends TestCase {
         $controllerGen = new ControllerGen(['tickets']);
         $query = $controllerGen->getQuery();
         $this->assertStringContainsString("\$tickets = Ticket::query();", $query);
-        $this->assertStringContainsString("\$tickets->where('user_id'", $query);
     }
 
     public function testGetControllerArgs() {
