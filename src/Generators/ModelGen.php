@@ -7,12 +7,12 @@ use San\Crud\Utils\SchemaUtils;
 
 class ModelGen extends BaseGen {
 
-    public function getModelName() {
-        return NameUtils::getModelName($this->mainTable());
-    }
-
     public function getUsesModels() {
         return join("\n", array_map(fn($table) => sprintf('use App\Models\%s;', NameUtils::getModelName((array) $table)), $this->tables));
+    }
+
+    public function getModelName() {
+        return NameUtils::getModelName($this->mainTable());
     }
 
     public function getSoftDelete() {
@@ -55,6 +55,8 @@ class ModelGen extends BaseGen {
         foreach (SchemaUtils::getTableFields($this->mainTableReal(), ['user_id']) as $field) {
             if ($field['type'] == 'json') {
                 $casts[] = sprintf("'%s' => AsArrayObject::class", $field['id']);
+            } elseif (preg_match('/^date/', $field['type'])) {
+                $casts[] = sprintf("'%s' => 'datetime'", $field['id']);
             }
         }
 
