@@ -19,6 +19,10 @@ The output is fully customizable and supports
 both [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 and [Tailwind CSS](https://tailwindcss.com/).
 
+## Demo Video
+
+<iframe src="https://www.youtube.com/embed/N_N2FqPDLvQ" width="100%" style="aspect-ratio: 16/9"></iframe>
+
 ## Screenshots
 
 ### Index page
