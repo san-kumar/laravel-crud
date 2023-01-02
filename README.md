@@ -32,7 +32,7 @@ and [Tailwind CSS](https://tailwindcss.com/).
 
 ## Demo Video
 
-<iframe src="https://www.youtube.com/embed/N_N2FqPDLvQ" width="100%" style="aspect-ratio: 16/9"></iframe>
+[![Laravel crud generator package](https://cdn.articlevideorobot.com/hosted/02-01-2023/laravel-crud-generator-5d81.webp)](https://www.youtube.com/watch?v=N_N2FqPDLvQ)
 
 ## Screenshots
 
