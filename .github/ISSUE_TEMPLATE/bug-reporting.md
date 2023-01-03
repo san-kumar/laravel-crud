@@ -11,8 +11,10 @@ Before submitting a bug report please make sure to include the following informa
 
 1. Have you set the mysql password in the .env file?
 
-2. Have you created the db migrations and tables for customer, tickets and replies and run artisan migration?
+2. Have you created the db migrations using `artisan migrate`?
 
-3. Can laravel can connect to your mysql db 
+3. Can laravel can connect to your mysql db?
 
 4. Are you able to see the output for `User:all()`?
+
+5. Can you see the tables you've created in the mysql database? (using phpmyadmin or mysql client)
