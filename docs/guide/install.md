@@ -10,6 +10,12 @@ $ composer require san-kumar/laravel-crud --dev
 
 ## Generate files
 
+:::warning Important!
+
+Make sure to create the db tables and run migrations before
+starting the crud generator.
+:::
+
 After installing the package you should see a
 new `crud:generate` command in your Artisan commands list.
 

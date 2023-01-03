@@ -86,12 +86,12 @@ validation rules for the form.
 
 ## Heads up!
 
-> Warning:  The package is still in _alpha_
-
-You should only use it with new projects. If you are using
-it in an existing project, make sure to back up (or commit)
-any project changes before running the command.
-
+>  The package is still in _alpha_
+> 
+> You should only use it with new projects. If you are using
+> it in an existing project, make sure to back up (or commit)
+> any project changes before running the command.
+> 
 
 The aim of the CRUD generator is to save you time by
 generating common boilerplate CRUD code for any database
@@ -113,6 +113,12 @@ $ composer require san-kumar/laravel-crud --dev
 ```
 
 ## Generate files
+
+>  Important!
+> 
+> Make sure to create the db tables and run migrations before
+> starting the crud generator.
+> 
 
 After installing the package you should see a
 new `crud:generate` command in your Artisan commands list.
