@@ -151,7 +151,7 @@ class CrudGenerate extends CrudBase {
 
     protected function getOptions() {
         return [
-            ['css', 'c', InputOption::VALUE_REQUIRED, 'Which css framework to use: bootstrap or tailwind (default: bootstrap)'],
+            ['css', 'c', InputOption::VALUE_REQUIRED, 'Which css framework to use: bootstrap, larastrap or tailwind (default: bootstrap)'],
             ['prefix', 'p', InputOption::VALUE_REQUIRED, 'The prefix for the route name (default: none)'],
             ['index', 'i', InputOption::VALUE_REQUIRED, 'The index view to use: "table", "cards" or "chat" (default table)'],
             ['layout', 'l', InputOption::VALUE_REQUIRED, 'The @layout name used by the views (default "app")'],

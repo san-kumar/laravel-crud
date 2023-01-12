@@ -9,8 +9,8 @@ use San\Crud\Utils\SchemaUtils;
 use San\Crud\Utils\TextUtils;
 
 class ViewGen extends BaseGen {
-    public function __construct(public array $tables, public array $aliases = [], public ?string $routePrefix = null) {
-        parent::__construct($tables,$aliases);
+    public function __construct(public array $tables, public array $aliases = [], public ?string $routePrefix = NULL) {
+        parent::__construct($tables, $aliases);
     }
 
     public function getViewName() {
@@ -44,10 +44,11 @@ class ViewGen extends BaseGen {
     public function genForm(string $template, string $path, array $replacements, bool $edit) {
         $input = function ($f) use ($edit, $path) {
             $type = (!empty($f->values) ? 'select' : (preg_match('/text/i', $f->type) ? 'textarea' : (preg_match('/bool/i', $f->type) ? 'boolean' : (preg_match('/json/i', $f->type) ? 'json' : 'input'))));
-            $default = !$edit && !empty($f->default) ? "?? '$f->default'" : null;
+            $default = !$edit && !empty($f->default) ? "?? '$f->default'" : NULL;
             $val = $edit ? sprintf('@old(\'%s\', %s)', $f->id, $f->type === 'json' ? "json_encode(\$_var_->{$f->id})" : "\$_var_->{$f->id}") : sprintf('@old(\'%s\') %s', $f->id, $default);
-            $inputType = preg_match('/int|double|float|decimal/i', $f->type) ? 'number' : (preg_match('/mail/i', $f->id) ? 'email' : (preg_match('/password/i', $f->id) ? 'password' : (preg_match('/datetime/i', $f->type) ? 'datetime-local' : (preg_match('/date/i', $f->type) ? 'date' : (preg_match('/time/i', $f->type) ? 'time' : 'text')))));
-            $vars = ['_id_' => $f->id, '_name_' => $f->name, '_enums_' => TextUtils::arrayExport($f->values ?? [], TRUE), '_val_' => $val, '_type_' => $inputType, '_required_' => $f->nullable ? '' : 'required'];
+            $inputType = preg_match('/int|double|float|decimal/i', $f->type) ? 'number' : (preg_match('/url/i', $f->id) ? 'url' :(preg_match('/color/i', $f->id) ? 'color' : (preg_match('/mail/i', $f->id) ? 'email' : (preg_match('/password/i', $f->id) ? 'password' : (preg_match('/datetime/i', $f->type) ? 'datetime-local' : (preg_match('/date/i', $f->type) ? 'date' : (preg_match('/time/i', $f->type) ? 'time' : 'text')))))));
+            $laraType = $inputType === 'datetime-local' ? 'datetime' : $inputType;
+            $vars = ['_id_' => $f->id, '_name_' => $f->name, '_label_' => $f->name, '_enums_' => TextUtils::arrayExport($f->values ?? [], TRUE), '_val_' => $val, '_type_' => $inputType, '_laratype_' => $laraType, '_required_' => $f->nullable ? '' : 'required'];
 
             if (!empty($f->relation)) {
                 $type = 'related';

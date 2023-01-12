@@ -32,8 +32,13 @@ class CrudBase extends Command {
     }
 
     protected function getCssFramework() {
-        if ($this->option('css') === 'tailwind') return 'tailwind';
-        if ($this->option('tailwind')) return 'tailwind';
+        if (preg_match('/^(tailwind|larastrap)$/', $this->option('css'))) {
+            return $this->option('css');
+        }
+
+        if ($this->option('tailwind')) {
+            return 'tailwind';
+        }
 
         return $this->getConfig('css', 'bootstrap');
     }

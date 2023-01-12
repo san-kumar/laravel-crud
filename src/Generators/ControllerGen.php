@@ -106,16 +106,32 @@ class ControllerGen extends BaseGen {
         foreach ($this->getFillableFields() as $field) {
             if (preg_match('/boolean|timestamp/', $field['type'])) continue;
 
+            $requirements = [];
+
             if (!$field['nullable']) {
-                $validations[$field['id']] = 'required';
+                $requirements[] = 'required';
+            }
+
+            if (preg_match('/email$/i', $field['id'])) {
+                $requirements[] = 'email';
+            } elseif (preg_match('/(url)/i', $field['id'])) {
+                $requirements[] = 'url';
+            } elseif (preg_match('/(integer|float|double|decimal)/i', $field['type'])) {
+                $requirements[] = 'numeric';
+            } elseif (preg_match('/(date|datetime)/i', $field['type'])) {
+                $requirements[] = 'date';
             }
 
             if (!empty($field['unique'])) {
-                $validations[$field['id']] .= (!empty($validations[$field['id']]) ? '|' : '') . "unique:{$this->mainTableReal()},{$field['id']}";
+                $unique = "unique:{$this->mainTableReal()},{$field['id']}";
                 if ($edit) {
-                    $validations[$field['id']] .= ",\${$this->getVarName()}->id";
+                    $unique .= ",\${$this->getVarName()}->id";
                 }
+
+                $requirements[] = $unique;
             }
+
+            $validations[$field['id']] = join('|', $requirements);
         }
 
         if (!empty($validations)) {
