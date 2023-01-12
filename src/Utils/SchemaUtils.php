@@ -35,7 +35,13 @@ class SchemaUtils {
         foreach ($columns as $column) {
             if (in_array($column->getName(), $ignoredColumns)) continue;
 
-            $field = ['id' => $column->getName(), 'type' => $column->getType()->getName(), 'name' => \Str::title(str_replace('_', ' ', $column->getName())), 'nullable' => !$column->getNotnull()];
+            $field = [
+                'id'       => $column->getName(),
+                'type'     => $column->getType()->getName(),
+                'name'     => \Str::title(str_replace('_', ' ', $column->getName())),
+                'nullable' => !$column->getNotnull(),
+                'default'  => $column->getDefault(),
+            ];
 
             if ($field['type'] == 'guid') {
                 try {

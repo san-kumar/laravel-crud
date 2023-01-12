@@ -44,7 +44,8 @@ class ViewGen extends BaseGen {
     public function genForm(string $template, string $path, array $replacements, bool $edit) {
         $input = function ($f) use ($edit, $path) {
             $type = (!empty($f->values) ? 'select' : (preg_match('/text/i', $f->type) ? 'textarea' : (preg_match('/bool/i', $f->type) ? 'boolean' : (preg_match('/json/i', $f->type) ? 'json' : 'input'))));
-            $val = $edit ? sprintf('@old(\'%s\', %s)', $f->id, $f->type === 'json' ? "json_encode(\$_var_->{$f->id})" : "\$_var_->{$f->id}") : sprintf('@old(\'%s\')', $f->id);
+            $default = !$edit && !empty($f->default) ? "?? '$f->default'" : null;
+            $val = $edit ? sprintf('@old(\'%s\', %s)', $f->id, $f->type === 'json' ? "json_encode(\$_var_->{$f->id})" : "\$_var_->{$f->id}") : sprintf('@old(\'%s\') %s', $f->id, $default);
             $inputType = preg_match('/int|double|float|decimal/i', $f->type) ? 'number' : (preg_match('/mail/i', $f->id) ? 'email' : (preg_match('/password/i', $f->id) ? 'password' : (preg_match('/datetime/i', $f->type) ? 'datetime-local' : (preg_match('/date/i', $f->type) ? 'date' : (preg_match('/time/i', $f->type) ? 'time' : 'text')))));
             $vars = ['_id_' => $f->id, '_name_' => $f->name, '_enums_' => TextUtils::arrayExport($f->values ?? [], TRUE), '_val_' => $val, '_type_' => $inputType, '_required_' => $f->nullable ? '' : 'required'];
 
