@@ -6,6 +6,9 @@ use San\Crud\Utils\NameUtils;
 use San\Crud\Utils\SchemaUtils;
 
 class ControllerGen extends BaseGen {
+    public function __construct(public array $tables, public array $aliases = [], public bool $singleForm = FALSE) {
+        parent::__construct($tables, $aliases);
+    }
 
     public function getControllerName() {
         return NameUtils::getControllerName($this->tables);
@@ -70,15 +73,28 @@ class ControllerGen extends BaseGen {
         return $this->getVars($this->parentTables());
     }
 
+    public function getCreateVar() {
+        return $this->singleForm ? sprintf('$%s = new %s();', $this->getVarName(), $this->getMainModelName()) : '';
+    }
+
     public function getCreateVars() {
         $extraVars = (array) array_map(fn($field) => $field['related_table'], (array) $this->getExternallyRelatedFields());
-        $result = $this->getVars($this->parentTables(), $extraVars);
+        $createVar = $this->singleForm ? [$this->getVarName()] : [];
+        $result = $this->getVars($this->parentTables(), array_merge($extraVars, $createVar));
 
         return $result;
     }
 
     public function getEditVars() {
         return $this->getVars($this->tables, (array) array_map(fn($field) => $field['related_table'], (array) $this->getExternallyRelatedFields()));
+    }
+
+    public function getCreateView() {
+        return $this->singleForm ? 'create-edit' : 'create';
+    }
+
+    public function getEditView() {
+        return $this->singleForm ? 'create-edit' : 'edit';
     }
 
     public function getWith() {

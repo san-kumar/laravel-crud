@@ -13,7 +13,7 @@ class _controller_ extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(Request $request, /*_cparentargs_*/) {
         /*_pauthorize_*/
@@ -32,14 +32,16 @@ class _controller_ extends Controller {
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function create(/*_cparentargs_*/) {
         /*_pauthorize_*/
 
         /*_cselects_*/
 
-        return view('_route_.create', /*_ccreatevars_*/);
+        /*_ccreatevar_*/
+
+        return view('_route_._createview_', /*_ccreatevars_*/);
     }
 
     /**
@@ -47,7 +49,7 @@ class _controller_ extends Controller {
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, /*_cparentargs_*/) {
         /*_pauthorize_*/
@@ -71,7 +73,7 @@ class _controller_ extends Controller {
      *
      * @param \App\Models\_model_ $_var_
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function show(/*_callargs_*/) {
         /*_pauthorize_*/
@@ -84,14 +86,14 @@ class _controller_ extends Controller {
      *
      * @param \App\Models\_model_ $_var_
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function edit(/*_callargs_*/) {
         /*_pauthorize_*/
 
         /*_cselects_*/
 
-        return view('_route_.edit', /*_ceditvars_*/);
+        return view('_route_._editview_', /*_ceditvars_*/);
     }
 
     /**
@@ -99,7 +101,7 @@ class _controller_ extends Controller {
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, /*_callargs_*/) {
         /*_pauthorize_*/
@@ -121,7 +123,7 @@ class _controller_ extends Controller {
      *
      * @param \App\Models\_model_ $_var_
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(/*_callargs_*/) {
         /*_pauthorize_*/
@@ -142,7 +144,7 @@ class _controller_ extends Controller {
      *
      * @param \App\Models\_model_ $_var_
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function restore(/*_cparentargs_*/ int $_var__id,) {
         /*_pauthorize_*/
@@ -158,6 +160,13 @@ class _controller_ extends Controller {
         }
     }
 
+    /**
+     * Permanently delete the specified resource from storage.
+     *
+     * @param \App\Models\_model_ $_var_
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function purge(/*_cparentargs_*/ int $_var__id,) {
         /*_pauthorize_*/
 

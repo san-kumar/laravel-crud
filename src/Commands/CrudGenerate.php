@@ -41,8 +41,9 @@ class CrudGenerate extends CrudBase {
         $aliases = $this->getTableAliases();
 
         $routePrefix = $this->option('prefix');
+        $singleForm = $this->option('merge-forms');
 
-        $cgen = new ControllerGen($tables, $aliases);
+        $cgen = new ControllerGen($tables, $aliases, $singleForm);
         $mgen = new ModelGen($tables, $aliases);
         $rgen = new RouteGen($tables, $aliases, $routePrefix);
         $vgen = new ViewGen($tables, $aliases, $routePrefix);
@@ -68,8 +69,11 @@ class CrudGenerate extends CrudBase {
             'cindexvars'  => $cgen->getIndexVars(),
             'callvars'    => $cgen->getAllVars(),
             'cparentvars' => $cgen->getParentVars(),
+            'ccreatevar'  => $cgen->getCreateVar(),
             'ccreatevars' => $cgen->getCreateVars(),
             'ceditvars'   => $cgen->getEditVars(),
+            'createview'  => $cgen->getCreateView(),
+            'editview'    => $cgen->getEditView(),
 
             'cvalidatecreate' => $cgen->getValidations(FALSE),
             'cvalidateedit'   => $cgen->getValidations(TRUE),
@@ -159,6 +163,7 @@ class CrudGenerate extends CrudBase {
             ['tailwind', 't', InputOption::VALUE_NONE, 'Use Tailwind CSS instead of Bootstrap 5 (shorthand for --css=tailwind)'],
             ['template', 'd', InputOption::VALUE_REQUIRED, 'The template directory (if you want to use custom templates)'],
             ['alias', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The alias for the table name (e.g. --alias some_alias=table_name --alias some_other_alias=another_table)'],
+            ['merge-forms', 'm', InputOption::VALUE_NONE, 'Merge create and edit views into a single form'],
             ['force', 'f', InputOption::VALUE_NONE, 'Force overwriting of existing files'],
         ];
     }

@@ -1,7 +1,7 @@
 @extends('_layout_')
 
 @section('_section_')
-    @if(!empty($showErrors))
+    @if(isset($showErrors))
         @if ($errors->any())
             <div class="container mx-auto sm:px-4">
                 <div class="bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700" role="alert">

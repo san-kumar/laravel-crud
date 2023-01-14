@@ -1,7 +1,7 @@
 @extends('_layout_')
 
 @section('_section_')
-    @if(!empty($showErrors))
+    @if(isset($showErrors))
         @if ($errors->any())
             <div class="container">
                 <div class="alert alert-danger rounded-0">
