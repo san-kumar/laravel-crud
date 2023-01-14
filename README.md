@@ -226,8 +226,23 @@ $ php artisan crud:generate authors -i cards
 $ php artisan crud:generate authors -i chat
 ```
 
-Please see
-the [index page here](https://san-kumar.github.io/laravel-crud/guide/index.md#screenshots) for
+### Single create and edit form
+
+In some cases, you may want to use a single form for both
+creating and editing a resource. You can do that by passing
+`--merge-forms` option.
+
+```bash
+# Create CRUD for authors table using a single form
+$ php artisan crud:generate authors --merge-forms
+```
+
+This will generate a single `view` file called
+`create-edit.blade.php` and update the controller code
+accordingly so that it can be used for both creating and
+editing a resource.
+
+Please see the [index page here](https://san-kumar.github.io/laravel-crud/guide/index.md#screenshots) for
 screenshots.
 
 ### Layout and section names
