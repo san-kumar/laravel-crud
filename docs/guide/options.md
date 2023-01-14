@@ -46,6 +46,9 @@ $ php artisan crud:generate authors -i cards
 $ php artisan crud:generate authors -i chat
 ```
 
+Please see the [index page here](/guide/index.md#screenshots) 
+for screenshots.
+
 ### Single create and edit form
 
 In some cases, you may want to use a single form for both
@@ -61,9 +64,6 @@ This will generate a single `view` file called
 `create-edit.blade.php` and update the controller code
 accordingly so that it can be used for both creating and
 editing a resource.
-
-Please see the [index page here](/guide/index.md#screenshots) for
-screenshots.
 
 ### Layout and section names
 

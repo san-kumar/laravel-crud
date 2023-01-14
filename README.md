@@ -226,6 +226,9 @@ $ php artisan crud:generate authors -i cards
 $ php artisan crud:generate authors -i chat
 ```
 
+Please see the [index page here](https://san-kumar.github.io/laravel-crud/guide/index.md#screenshots) 
+for screenshots.
+
 ### Single create and edit form
 
 In some cases, you may want to use a single form for both
@@ -241,9 +244,6 @@ This will generate a single `view` file called
 `create-edit.blade.php` and update the controller code
 accordingly so that it can be used for both creating and
 editing a resource.
-
-Please see the [index page here](https://san-kumar.github.io/laravel-crud/guide/index.md#screenshots) for
-screenshots.
 
 ### Layout and section names
 
@@ -580,9 +580,13 @@ create a Zip archive of all the removed files too.
 
 # Roadmap
 
-This document describes the roadmap for the next major
-version of the Symfony framework.
+- Add support for Livewire
+- Add support for Laravel Jetstream
 
-## Automatic unit testing
+# License
 
-Automatically generate unit tests for all generated CRUD.
+The software is licensed using a MIT License. It means you
+can do whatever you want with it (including using it for
+commercial purposes freely), as long as you include the
+original copyright and license notice in any copy of the
+software/source.
