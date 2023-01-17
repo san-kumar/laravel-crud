@@ -11,7 +11,7 @@ class CrudBase extends Command {
     }
 
     protected function getTemplateDir() {
-        $customDir = $this->getConfig('template-dir');
+        $customDir = $this->getConfig('template_dir');
 
         if (!empty($customDir)) {
             if (!is_dir($customDir)) {
