@@ -578,11 +578,6 @@ This too will remove the files from the disk but will also
 create a Zip archive of all the removed files too.
 
 
-# Roadmap
-
-- Add support for Livewire
-- Add support for Laravel Jetstream
-
 # License
 
 The software is licensed using a MIT License. It means you
@@ -590,3 +585,17 @@ can do whatever you want with it (including using it for
 commercial purposes freely), as long as you include the
 original copyright and license notice in any copy of the
 software/source.
+
+# Roadmap
+
+- Add support for Livewire
+- Add support for Laravel Jetstream
+
+# About
+
+**Found any bugs?** Report them on the [issue tracker](https://github.com/san-kumar/laravel-crud/issues).
+
+**Want to contribute?** Fork the project on GitHub and send a
+pull request.
+
+**Like the project?** Star it on GitHub.

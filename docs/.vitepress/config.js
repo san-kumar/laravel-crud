@@ -42,8 +42,9 @@ export default {
                 items: [
                     {text: 'Gotchas', link: '/guide/gotchas'},
                     {text: 'CRUD removal', link: '/guide/remove'},
-                    {text: 'Roadmap', link: '/guide/roadmap'},
                     {text: 'License', link: '/guide/license'},
+                    {text: 'Roadmap', link: '/guide/roadmap'},
+                    {text: 'About', link: '/guide/about'},
                 ]
             },
         ],
