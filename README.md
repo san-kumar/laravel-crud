@@ -271,8 +271,6 @@ notation to specify the parent tables like this:
 `authors.posts.comments`.
 
 ```bash
-
-```bash
 # Create CRUD for authors table
 $ php artisan crud:generate authors
 
